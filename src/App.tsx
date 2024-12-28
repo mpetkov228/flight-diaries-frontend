@@ -13,6 +13,22 @@ const App = () => {
 
   return (
     <div>
+      <h3>Add a new entry</h3>
+      <form>
+        <div>
+          date <input />
+        </div>
+        <div>
+          visibility <input />
+        </div>
+        <div>
+          weather <input />
+        </div>
+        <div>
+          comment <input />
+        </div>
+        <button type="submit">add</button>
+      </form>
       <h3>Diary entries</h3>
       {diaries.map(entry => 
         <div key={entry.id}>
