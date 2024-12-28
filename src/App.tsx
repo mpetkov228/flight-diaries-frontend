@@ -1,31 +1,73 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import { DiaryEntry } from "./types";
+import diaryService from "./services/diaryService";
 
 const App = () => {
+  const [date, setDate] = useState('');
+  const [visibility, setVisibility] = useState('');
+  const [weather, setWeather] = useState('');
+  const [comment, setComment] = useState('');
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/diaries')
-      .then(response => setDiaries(response.data));
+    diaryService.getEntries()
+      .then(data => setDiaries(data));
   }, []);
+
+  const clearForm = () => {
+    setDate('');
+    setVisibility('');
+    setWeather('');
+    setComment('');
+  };
+
+  const entryCreation = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    const newEntry = {
+      date,
+      visibility,
+      weather,
+      comment
+    };
+    diaryService.createEntry(newEntry)
+      .then(data => setDiaries(diaries.concat(data)));
+    
+    clearForm();
+  };
 
   return (
     <div>
       <h3>Add a new entry</h3>
-      <form>
+      <form onSubmit={entryCreation}>
         <div>
-          date <input />
+          date 
+          <input 
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+          />
         </div>
         <div>
-          visibility <input />
+          visibility 
+          <input 
+            value={visibility}
+            onChange={(event) => setVisibility(event.target.value)}
+          />
         </div>
         <div>
-          weather <input />
+          weather 
+          <input 
+            value={weather}
+            onChange={(event) => setWeather(event.target.value)}
+          />
         </div>
         <div>
-          comment <input />
+          comment 
+          <input 
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+          />
         </div>
         <button type="submit">add</button>
       </form>
