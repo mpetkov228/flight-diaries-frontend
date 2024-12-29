@@ -9,6 +9,7 @@ const App = () => {
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('');
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     diaryService.getEntries()
@@ -31,15 +32,22 @@ const App = () => {
       weather,
       comment
     };
-    diaryService.createEntry(newEntry)
-      .then(data => setDiaries(diaries.concat(data)));
     
-    clearForm();
+    diaryService.createEntry(newEntry)
+      .then(data => setDiaries(diaries.concat(data)))
+      .catch(error => {
+        console.log(error);
+        setError(error.message);
+      });
+    
+    // clearForm();
   };
+
 
   return (
     <div>
       <h3>Add a new entry</h3>
+      {error ? <div>{error}</div> : null}
       <form onSubmit={entryCreation}>
         <div>
           date 
