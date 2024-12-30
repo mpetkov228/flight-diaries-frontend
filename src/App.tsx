@@ -9,7 +9,7 @@ const App = () => {
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('');
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     diaryService.getEntries()
@@ -36,18 +36,27 @@ const App = () => {
     diaryService.createEntry(newEntry)
       .then(data => setDiaries(diaries.concat(data)))
       .catch(error => {
-        console.log(error);
-        setError(error.message);
+        const issues = error.response.data.error[0];
+        setError(`Error: Incorrect ${issues.path[0]}: ${issues.received}`);
       });
     
-    // clearForm();
+    setTimeout(() => {
+      setError('');
+    }, 5000);
+    
+    clearForm();
+  };
+
+  const errorStyle = {
+    color: 'red',
+    margin: 5
   };
 
 
   return (
     <div>
       <h3>Add a new entry</h3>
-      {error ? <div>{error}</div> : null}
+      {error !== '' ? <div style={errorStyle}>{error}</div> : null}
       <form onSubmit={entryCreation}>
         <div>
           date 
