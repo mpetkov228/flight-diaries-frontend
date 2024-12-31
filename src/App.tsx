@@ -23,6 +23,14 @@ const App = () => {
     setComment('');
   };
 
+  const visibilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVisibility(event.target.value);
+  };
+
+  const weatherChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWeather(event.target.value);
+  };
+
   const entryCreation = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
@@ -61,23 +69,25 @@ const App = () => {
         <div>
           date 
           <input 
+            type="date"
             value={date}
             onChange={(event) => setDate(event.target.value)}
           />
         </div>
         <div>
           visibility 
-          <input 
-            value={visibility}
-            onChange={(event) => setVisibility(event.target.value)}
-          />
+          great <input type="radio" value="great" name="visibility" onChange={visibilityChange} />
+          good <input type="radio" value="good" name="visibility" onChange={visibilityChange} />
+          ok <input type="radio" value="ok" name="visibility" onChange={visibilityChange} />
+          poor <input type="radio" value="poor" name="visibility" onChange={visibilityChange} />
         </div>
         <div>
           weather 
-          <input 
-            value={weather}
-            onChange={(event) => setWeather(event.target.value)}
-          />
+          sunny <input type="radio" value="sunny" name="weather" onChange={weatherChange} />
+          rainy <input type="radio" value="rainy" name="weather" onChange={weatherChange} />
+          cloudy <input type="radio" value="cloudy" name="weather" onChange={weatherChange} />
+          stormy <input type="radio" value="stormy" name="weather" onChange={weatherChange} />
+          windy <input type="radio" value="windy" name="weather" onChange={weatherChange} />
         </div>
         <div>
           comment 
